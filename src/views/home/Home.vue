@@ -11,7 +11,13 @@
     <!-- 4.本周类型图片 -->
     <feature-view />
     <!-- 5.三个小分类 -->
-    <tab-control class="tab-control" :titles="['流行', '新款', '精选']" />
+    <tab-control
+      class="tab-control"
+      :titles="['流行', '新款', '精选']"
+      @tabClick="tabClick"
+    />
+    <!-- 6.商品展示 -->
+    <goods-list :goods="showGoods" />
     <ul>
       <li>1name</li>
       <li>2name</li>
@@ -130,6 +136,8 @@ import FeatureView from "./childComps/FeatureView.vue";
 import NavBar from "components/common/navbar/NavBar";
 // 导入3个小分类组件
 import TabControl from "components/content/tabControl/TabControl.vue";
+// 导入商品组件
+import GoodsList from "components/content/goods/GoodsList.vue";
 
 // todo 其他方法
 // 导入网络请求接口
@@ -144,6 +152,7 @@ export default {
 
     NavBar,
     TabControl,
+    GoodsList,
   },
   data() {
     return {
@@ -158,18 +167,43 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] },
       },
+      // 4.设置首页默认展示类型，下面方法根据index改类型
+      currentType: "pop",
     };
   },
   created() {
-    // 1.请求多个数据
+    // 1.请求多个数据---轮播图与推荐
     this.getHomeMultidata();
     // 2.请求三类商品数据
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
   },
+  computed: {
+    showGoods() {
+      return this.goods[this.currentType].list;
+    },
+  },
 
   methods: {
+    /**
+     * 事件监听相关方法
+     */
+    tabClick(index) {
+      switch (index) {
+        case 0:
+          this.currentType = "pop";
+          break;
+        case 1:
+          this.currentType = "new";
+          break;
+        case 2:
+          this.currentType = "sell";
+          break;
+      }
+    },
+
+    //网络请求相关方法
     //! 将网络请求多包装一层，使created更加清晰
     getHomeMultidata() {
       getHomeMultidata().then((res) => {
@@ -218,5 +252,7 @@ export default {
 .tab-control {
   position: sticky;
   top: 44px;
+  /* 为了让下面的图片不盖住三个标题 */
+  z-index: 9;
 }
 </style>
