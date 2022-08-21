@@ -4,122 +4,24 @@
     <nav-bar class="home-nav">
       <template v-slot:center>购物街</template>
     </nav-bar>
-    <!-- 2.轮播图  -->
-    <home-swiper :banners="banners" />
-    <!-- 3.推荐 -->
-    <recommend-view :recommends="recommends" />
-    <!-- 4.本周类型图片 -->
-    <feature-view />
-    <!-- 5.三个小分类 -->
-    <tab-control
-      class="tab-control"
-      :titles="['流行', '新款', '精选']"
-      @tabClick="tabClick"
-    />
-    <!-- 6.商品展示 -->
-    <goods-list :goods="showGoods" />
-    <ul>
-      <li>1name</li>
-      <li>2name</li>
-      <li>3name</li>
-      <li>4name</li>
-      <li>5name</li>
-      <li>6name</li>
-      <li>7name</li>
-      <li>8name</li>
-      <li>9name</li>
-      <li>10name</li>
-      <li>11name</li>
-      <li>12name</li>
-      <li>13name</li>
-      <li>14name</li>
-      <li>15name</li>
-      <li>16name</li>
-      <li>17name</li>
-      <li>18name</li>
-      <li>19name</li>
-      <li>20name</li>
-      <li>21name</li>
-      <li>22name</li>
-      <li>23name</li>
-      <li>24name</li>
-      <li>25name</li>
-      <li>26name</li>
-      <li>27name</li>
-      <li>28name</li>
-      <li>29name</li>
-      <li>30name</li>
-      <li>31name</li>
-      <li>32name</li>
-      <li>33name</li>
-      <li>34name</li>
-      <li>35name</li>
-      <li>36name</li>
-      <li>37name</li>
-      <li>38name</li>
-      <li>39name</li>
-      <li>40name</li>
-      <li>41name</li>
-      <li>42name</li>
-      <li>43name</li>
-      <li>44name</li>
-      <li>45name</li>
-      <li>46name</li>
-      <li>47name</li>
-      <li>48name</li>
-      <li>49name</li>
-      <li>50name</li>
-      <li>51name</li>
-      <li>52name</li>
-      <li>53name</li>
-      <li>54name</li>
-      <li>55name</li>
-      <li>56name</li>
-      <li>57name</li>
-      <li>58name</li>
-      <li>59name</li>
-      <li>60name</li>
-      <li>61name</li>
-      <li>62name</li>
-      <li>63name</li>
-      <li>64name</li>
-      <li>65name</li>
-      <li>66name</li>
-      <li>67name</li>
-      <li>68name</li>
-      <li>69name</li>
-      <li>70name</li>
-      <li>71name</li>
-      <li>72name</li>
-      <li>73name</li>
-      <li>74name</li>
-      <li>75name</li>
-      <li>76name</li>
-      <li>77name</li>
-      <li>78name</li>
-      <li>79name</li>
-      <li>80name</li>
-      <li>81name</li>
-      <li>82name</li>
-      <li>83name</li>
-      <li>84name</li>
-      <li>85name</li>
-      <li>86name</li>
-      <li>87name</li>
-      <li>88name</li>
-      <li>89name</li>
-      <li>90name</li>
-      <li>91name</li>
-      <li>92name</li>
-      <li>93name</li>
-      <li>94name</li>
-      <li>95name</li>
-      <li>96name</li>
-      <li>97name</li>
-      <li>98name</li>
-      <li>99name</li>
-      <li>100name</li>
-    </ul>
+
+    <!-- BScroll包裹滚动 -->
+    <scroll class="content">
+      <!-- 2.轮播图  -->
+      <home-swiper :banners="banners" />
+      <!-- 3.推荐 -->
+      <recommend-view :recommends="recommends" />
+      <!-- 4.本周类型图片 -->
+      <feature-view />
+      <!-- 5.三个小分类 -->
+      <tab-control
+        class="tab-control"
+        :titles="['流行', '新款', '精选']"
+        @tabClick="tabClick"
+      />
+      <!-- 6.商品展示 -->
+      <goods-list :goods="showGoods" />
+    </scroll>
   </div>
 </template>
 <script>
@@ -138,6 +40,8 @@ import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabControl/TabControl.vue";
 // 导入商品组件
 import GoodsList from "components/content/goods/GoodsList.vue";
+// 导入滚动组件BetterScroll
+import Scroll from "components/common/scroll/Scroll.vue";
 
 // todo 其他方法
 // 导入网络请求接口
@@ -153,6 +57,7 @@ export default {
     NavBar,
     TabControl,
     GoodsList,
+    Scroll,
   },
   data() {
     return {
@@ -232,8 +137,11 @@ export default {
 <style scoped>
 /* 给导航栏一个位置触发下面的定位 */
 #home {
-  /* 导航栏高度是44px */
-  padding-top: 44px;
+  /* 导航栏高度是44px ,后面设置bscroll需要确定视口高度，所以要注释掉*/
+  /* padding-top: 44px; */
+
+  /* vh视口高度，即屏幕可见高度 */
+  height: 100vh;
 }
 /* 首页导航栏背景颜色 + 文字颜色 */
 .home-nav {
@@ -255,4 +163,23 @@ export default {
   /* 为了让下面的图片不盖住三个标题 */
   z-index: 9;
 }
+
+/* 滚动区域定位方案2,去除掉导航栏和底部tabbar */
+.content {
+  /* height: 300px; */
+  overflow: hidden;
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
+}
+/* 滚动区域定位方案1 */
+/* .content{
+  /* 计算滚动高度 */
+/* height: calc(100% - 93px); */
+/* overflow: hidden; */
+/* 上面设置好滚动高度，为了从导航栏下面开始滚动，所以得撑开导航栏高度44px */
+/* margin-top: 44px; }
+  */
 </style>
