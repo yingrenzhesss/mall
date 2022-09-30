@@ -95,11 +95,24 @@ export default {
       },
       // 4.设置首页默认展示类型，下面方法根据index改类型
       currentType: "pop",
+
       isShowBackTop: false,
       tabOffsetTop: 0,
       isTabFixed: false,
+      saveY: 0,
     };
   },
+  // 解决路由跳转，返回首页页面不变
+  // deactivated记录位置，activated滚动到指定位置
+  activated() {
+    this.$refs.scroll.scrollTo(0, this.saveY, 0);
+    this.$refs.scroll.refresh(); //bs问题，不刷新会出错
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroll.getScrollY();
+    // console.log(this.saveY);
+  },
+
   created() {
     // 1.请求多个数据---轮播图与推荐
     this.getHomeMultidata();
